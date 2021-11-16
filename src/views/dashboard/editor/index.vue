@@ -2,8 +2,8 @@
   <div class="dashboard-editor-container">
     <div class=" clearfix">
       <pan-thumb :image="avatar" style="float: left">
-        Your roles:
-        <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
+        您的角色:
+        <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item.description }}</span>
       </pan-thumb>
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
