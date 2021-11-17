@@ -123,7 +123,7 @@ export default {
       captchaSrc: '',
       loginForm: {
         username: 'admin',
-        password: '111111',
+        password: 'admin123456',
         uuid: '',
         captcha: ''
       },

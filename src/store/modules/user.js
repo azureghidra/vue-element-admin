@@ -35,8 +35,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password, uuid: uuid, captcha: captcha }).then(response => {
         const { tokenPrefix, token } = response.data
-        console.log('========================================')
-        console.log(tokenPrefix)
+        // console.log('========================================')
+        // console.log(tokenPrefix)
         commit('SET_TOKEN', tokenPrefix + token)
         setToken(tokenPrefix + token)
         resolve()

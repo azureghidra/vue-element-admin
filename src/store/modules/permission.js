@@ -1,5 +1,5 @@
 import { asyncRoutes, constantRoutes } from '@/router'
-// import { getMenus } from '@/api/auth'
+import { getMenus } from '@/api/auth'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -48,22 +48,20 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
-    return new Promise(resolve => {
-      let accessedRoutes
-      console.log('##########################')
-      console.log(roles)
-      console.log('##########################')
-      console.log(asyncRoutes)
-      // let res = await getMenus()
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
-    })
+  generateRoutes: async function({ commit }, roles) {
+    let accessedRoutes
+    const res = await getMenus()
+    const myAsyncRoutes = res.data
+    console.log('##########################')
+    console.log(myAsyncRoutes)
+    console.log('##########################')
+    if (roles.includes('admin')) {
+      accessedRoutes = asyncRoutes || []
+    } else {
+      accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+    }
+    commit('SET_ROUTES', accessedRoutes)
+    return accessedRoutes
   }
 }
 
