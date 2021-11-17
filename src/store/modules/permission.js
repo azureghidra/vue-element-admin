@@ -1,4 +1,5 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+// import { getMenus } from '@/api/auth'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -54,6 +55,7 @@ const actions = {
       console.log(roles)
       console.log('##########################')
       console.log(asyncRoutes)
+      // let res = await getMenus()
       if (roles.includes('admin')) {
         accessedRoutes = asyncRoutes || []
       } else {
@@ -63,6 +65,28 @@ const actions = {
       resolve(accessedRoutes)
     })
   }
+}
+
+export const formatMenu = (data) => {
+  const fmtRoutes = []
+  data.forEach(router => {
+    let { children } = router
+    const { path, name, iconCls } = router
+    if (children && children instanceof Array) {
+      children = formatMenu(children)
+    }
+    const fmtRoute = {
+      path: path,
+      name: name,
+      iconCls: iconCls,
+      children: children
+      // component() {
+      //   import('../../views/' + {component} +'.vue')
+      // }
+    }
+    fmtRoutes.push(fmtRoute)
+  })
+  return fmtRoutes
 }
 
 export default {
