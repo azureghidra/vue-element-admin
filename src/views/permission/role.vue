@@ -92,7 +92,7 @@ export default {
     }
   },
   created() {
-    // Mock: get all routes and roles list from server
+    // Mock: get all routes and system list from server
     this.getRoutes()
     this.getRoles()
   },
@@ -234,7 +234,7 @@ export default {
         type: 'success'
       })
     },
-    // reference: src/view/layout/components/Sidebar/SidebarItem.vue
+    // reference: src/view/layout/role/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
       let onlyOneChild = null
       const showingChildren = children.filter(item => !item.hidden)

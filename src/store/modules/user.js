@@ -58,9 +58,9 @@ const actions = {
 
         const { roles, name, avatar, introduction } = data
 
-        // roles must be a non-empty array
+        // system must be a non-empty array
         if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+          reject('getInfo: system must be a non-null array!')
         }
 
         commit('SET_ROLES', roles)
@@ -115,7 +115,7 @@ const actions = {
 
     resetRouter()
 
-    // generate accessible routes map based on roles
+    // generate accessible routes map based on system
     const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
     // dynamically add accessible routes
     router.addRoutes(accessRoutes)

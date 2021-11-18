@@ -3,7 +3,7 @@
 import Layout from '@/layout'
 
 const componentsRouter = {
-  path: '/components',
+  path: '/role',
   component: Layout,
   redirect: 'noRedirect',
   name: 'ComponentDemo',
