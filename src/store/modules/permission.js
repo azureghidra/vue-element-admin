@@ -1,5 +1,6 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes } from '@/router'
 import { getMenus } from '@/api/auth'
+import Layout from '@/layout'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -24,6 +25,14 @@ export function filterAsyncRoutes(routes, roles) {
 
   routes.forEach(route => {
     const tmp = { ...route }
+    const component = tmp.component
+    if (route.component) {
+      if (component === 'Layout') {
+        tmp.component = Layout
+      } else {
+        tmp.component = (resolve) => require([`@/views/${component}`], resolve)
+      }
+    }
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, roles)
@@ -31,7 +40,6 @@ export function filterAsyncRoutes(routes, roles) {
       res.push(tmp)
     }
   })
-
   return res
 }
 
@@ -48,43 +56,15 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes: async function({ commit }, roles) {
-    let accessedRoutes
-    const res = await getMenus()
-    const myAsyncRoutes = res.data
-    console.log('##########################')
-    console.log(myAsyncRoutes)
-    console.log('##########################')
-    if (roles.includes('admin')) {
-      accessedRoutes = asyncRoutes || []
-    } else {
-      accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-    }
-    commit('SET_ROUTES', accessedRoutes)
-    return accessedRoutes
+  generateRoutes({ commit }, roles) {
+    return new Promise(resolve => {
+      getMenus().then(response => {
+        const accessedRoutes = filterAsyncRoutes(response.data, roles)
+        commit('SET_ROUTES', accessedRoutes)
+        resolve(accessedRoutes)
+      })
+    })
   }
-}
-
-export const formatMenu = (data) => {
-  const fmtRoutes = []
-  data.forEach(router => {
-    let { children } = router
-    const { path, name, iconCls } = router
-    if (children && children instanceof Array) {
-      children = formatMenu(children)
-    }
-    const fmtRoute = {
-      path: path,
-      name: name,
-      iconCls: iconCls,
-      children: children
-      // component() {
-      //   import('../../views/' + {component} +'.vue')
-      // }
-    }
-    fmtRoutes.push(fmtRoute)
-  })
-  return fmtRoutes
 }
 
 export default {
