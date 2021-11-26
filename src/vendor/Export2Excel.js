@@ -70,8 +70,8 @@ function sheet_from_array_of_arrays(data, opts) {
       r: 0
     }
   };
-  for (var R = 0; R != data.length; ++R) {
-    for (var C = 0; C != data[R].length; ++C) {
+  for (var R = 0; R !==data.length; ++R) {
+    for (var C = 0; C !==data[R].length; ++C) {
       if (range.s.r > R) range.s.r = R;
       if (range.s.c > C) range.s.c = C;
       if (range.e.r < R) range.e.r = R;
@@ -109,7 +109,7 @@ function Workbook() {
 function s2ab(s) {
   var buf = new ArrayBuffer(s.length);
   var view = new Uint8Array(buf);
-  for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+  for (var i = 0; i !==s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
   return buf;
 }
 

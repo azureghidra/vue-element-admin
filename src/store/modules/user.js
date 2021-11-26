@@ -7,7 +7,8 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  perms: []
 }
 
 const mutations = {
@@ -17,26 +18,39 @@ const mutations = {
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_NICKNAME: (state, nickname) => {
+    state.nickname = nickname
   },
   SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+    state.avatar = 'data:image/jpg;base64,' + avatar
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_PERMS: (state, perms) => {
+    state.perms = perms
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, uuid, captcha } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      login({
+        username: username.trim(),
+        password: password,
+        uuid: uuid,
+        captcha: captcha
+      }).then(response => {
+        const { tokenPrefix, token } = response.data
+        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+        console.log(response)
+        console.log(tokenPrefix)
+        console.log(token)
+        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+        commit('SET_TOKEN', tokenPrefix + token)
+        setToken(tokenPrefix + token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -48,23 +62,26 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+        console.log(response)
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
         const { data } = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { roles, nickname, avatar, perms } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_NICKNAME', nickname)
         commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
+        commit('SET_ROLES', roles)
+        commit('SET_PERMS', perms)
         resolve(data)
       }).catch(error => {
         reject(error)

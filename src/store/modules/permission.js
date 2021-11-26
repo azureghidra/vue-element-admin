@@ -1,5 +1,6 @@
-import { asyncRoutes, constantRoutes } from '@/router'
-
+import { constantRoutes } from '@/router'
+import { getMenus } from '@/api/menu'
+import Layout from '@/layout'
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
@@ -23,6 +24,15 @@ export function filterAsyncRoutes(routes, roles) {
 
   routes.forEach(route => {
     const tmp = { ...route }
+    const component = tmp.component
+    if (route.component) {
+      if (component === 'Layout') {
+        tmp.component = Layout
+      } else {
+        // 这一句不能写错了，否则路由不能跳转
+        tmp.component = (resolve) => require([`@/views/${component}`], resolve)
+      }
+    }
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, roles)
@@ -30,7 +40,6 @@ export function filterAsyncRoutes(routes, roles) {
       res.push(tmp)
     }
   })
-
   return res
 }
 
@@ -49,14 +58,11 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
+      getMenus().then(response => {
+        const accessedRoutes = filterAsyncRoutes(response.data, roles)
+        commit('SET_ROUTES', accessedRoutes)
+        resolve(accessedRoutes)
+      })
     })
   }
 }

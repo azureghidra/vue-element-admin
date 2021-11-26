@@ -47,7 +47,23 @@
           </span>
         </el-form-item>
       </el-tooltip>
-
+      <el-form-item prop="captcha" style="float:left; width: 63%">
+        <span class="svg-container">
+          <svg-icon icon-class="captcha" />
+        </span>
+        <el-input
+          ref="captcha"
+          v-model="loginForm.captcha"
+          placeholder="在此输入验证码，点击图片更换"
+          name="captcha"
+          type="text"
+          tabindex="3"
+          auto-complete="off"
+        />
+      </el-form-item>
+      <div class="login-code" style="cursor:pointer; width: 30%;height: 48px;float: right;background-color: #f0f1f5;">
+        <el-image style="height: 48px;width: 100%;border: 1px solid rgba(0,0,0, 0.1);border-radius:5px;" :src="captchaSrc" @click="captchaImage" />
+      </div>
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
@@ -84,6 +100,7 @@
 import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
+import { captcha } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -103,14 +120,25 @@ export default {
         callback()
       }
     }
+    const validateCaptcha = (rule, value, callback) => {
+      if (value.length < 2) {
+        callback(new Error('The password can not be less than 2 digits'))
+      } else {
+        callback()
+      }
+    }
     return {
+      captchaSrc: '',
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: 'admin123456',
+        uuid: '',
+        captcha: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        captcha: [{ required: true, trigger: 'blur', validator: validateCaptcha }]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -134,18 +162,30 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    this.captchaImage()
   },
   mounted() {
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus()
+    } else if (this.loginForm.captcha === '') {
+      this.$refs.captcha.focus()
     }
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    captchaImage() {
+      captcha().then((res) => {
+        const { uuid, captcha } = res.data
+        this.captchaSrc = captcha
+        this.loginForm.uuid = uuid
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')

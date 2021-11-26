@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
@@ -19,6 +20,11 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
+import Pagination from '@/components/Pagination'
+
+import 'default-passive-events' // 移除浏览器提示 Added non-passive event listener to a scroll-blocking...
+
+import { listDictItemByCode } from '@/api/system/dict-item'
 
 /**
  * If you don't want to use mock-server
@@ -28,10 +34,23 @@ import * as filters from './filters' // global filters
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
+
+/* if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
-}
+}*/
+
+// 全局组件挂载
+Vue.component('Pagination', Pagination)
+
+// 全局指令注册
+import permission from './directive/permission'
+Vue.use(permission)
+
+// 全局方法挂载
+Vue.prototype.listDictItemByCode = listDictItemByCode
+import global from '@/utils/global'
+Vue.use(global)
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

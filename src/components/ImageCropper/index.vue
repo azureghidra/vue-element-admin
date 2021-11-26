@@ -14,7 +14,7 @@
           @click="handleClick"
           @drop="handleChange"
         >
-          <i v-show="loading != 1" class="vicp-icon1">
+          <i v-show="loading !==1" class="vicp-icon1">
             <i class="vicp-icon1-arrow" />
             <i class="vicp-icon1-body" />
             <i class="vicp-icon1-bottom" />
