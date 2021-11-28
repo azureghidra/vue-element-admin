@@ -52,6 +52,18 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
+      if (res.code === 'B0001') {
+        // to re-login
+        MessageBox.confirm('您尚未登录，请重新登录', '重新登录确认', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'error'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      }
       if (res.code === 'A0230') {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {

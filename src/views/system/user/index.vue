@@ -119,8 +119,8 @@
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.status"
-                :active-value="1"
-                :inactive-value="0"
+                :active-value="true"
+                :inactive-value="false"
                 @change="handleStatusChange(scope.row)"
               />
             </template>
@@ -210,8 +210,8 @@
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
             <el-radio-group v-model="form.status">
-              <el-radio :label="1">正常</el-radio>
-              <el-radio :label="0">停用</el-radio>
+              <el-radio :label="true">正常</el-radio>
+              <el-radio :label="false">停用</el-radio>
             </el-radio-group>
           </el-radio-group>
         </el-form-item>

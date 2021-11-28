@@ -8,7 +8,7 @@
       <el-form-item>
         <el-input
           v-model="queryParams.name"
-          placeholder="部门名称"
+          placeholder="项目名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -33,11 +33,11 @@
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       border
     >
-      <el-table-column prop="name" label="部门名称" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="name" label="项目名称" />
+      <el-table-column prop="status" label="进展状态" width="100">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status===1" type="success">正常</el-tag>
-          <el-tag v-else type="info">禁用</el-tag>
+          <el-tag v-if="scope.row.status===1" type="success">已完成</el-tag>
+          <el-tag v-else type="info">正在进行</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="sort" label="显示排序" width="200" />
@@ -71,7 +71,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- 添加或修改部门对话框 -->
+    <!-- 添加或修改项目对话框 -->
     <el-dialog
       :title="dialog.title"
       :visible.sync="dialog.visible"
@@ -84,25 +84,28 @@
         label-width="80px"
       >
 
-        <el-form-item label="上级部门" prop="parentId">
+        <el-form-item label="检验类别" prop="parentId">
           <tree-select
             v-model="form.parentId"
             :options="deptOptions"
-            placeholder="选择上级部门"
+            placeholder="选择检验类别"
           />
         </el-form-item>
 
-        <el-form-item label="部门名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入部门名称" />
+        <el-form-item label="项目名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入项目名称" />
+        </el-form-item>
+        <el-form-item label="委托单位" prop="weituo_danwei">
+          <el-input v-model="form.weiTuoDanWei" placeholder="请输入委托单位名称" />
         </el-form-item>
 
         <el-form-item label="显示排序" prop="sort">
           <el-input-number v-model="form.sort" controls-position="right" style="width: 100px" :min="0" />
         </el-form-item>
-        <el-form-item label="部门状态">
+        <el-form-item label="进展状态">
           <el-radio-group v-model="form.status">
-            <el-radio :label="true">正常</el-radio>
-            <el-radio :label="false">禁用</el-radio>
+            <el-radio :label="true">已完成</el-radio>
+            <el-radio :label="false">进行中</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -115,12 +118,9 @@
 </template>
 
 <script>
-import { getDeptTableList, getDeptSelectList, detail, update, add, del } from '@/api/system/dept'
-import TreeSelect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
-  components: { TreeSelect },
+  components: '',
   data() {
     return {
       loading: true,
@@ -155,76 +155,76 @@ export default {
   },
   methods: {
     handleQuery() {
-      getDeptTableList(this.queryParams).then(response => {
-        this.tableList = response.data
-        this.loading = false
-      })
+      // getDeptTableList(this.queryParams).then(response => {
+      //   this.tableList = response.data
+      //   this.loading = false
+      // })
     },
     handleReset() {
-      this.queryParams = {
-        name: undefined,
-        status: undefined
-      }
-      this.handleQuery()
+      // this.queryParams = {
+      //   name: undefined,
+      //   status: undefined
+      // }
+      // this.handleQuery()
     },
     async handleAdd(row) {
-      this.resetForm()
-      this.dialog = {
-        title: '新增部门',
-        visible: true
-      }
-      await this.loadDeptOptions()
-      if (row) {
-        this.form.parentId = row.id
-      }
+      // this.resetForm()
+      // this.dialog = {
+      //   title: '新增部门',
+      //   visible: true
+      // }
+      // await this.loadDeptOptions()
+      // if (row) {
+      //   this.form.parentId = row.id
+      // }
     },
     async handleUpdate(row) {
-      this.resetForm()
-      this.dialog = {
-        title: '修改部门',
-        visible: true
-      }
-      // 部门下拉数据
-      await this.loadDeptOptions()
-      detail(row.id).then(response => {
-        this.form = response.data
-      })
+      // this.resetForm()
+      // this.dialog = {
+      //   title: '修改部门',
+      //   visible: true
+      // }
+      // // 部门下拉数据
+      // await this.loadDeptOptions()
+      // detail(row.id).then(response => {
+      //   this.form = response.data
+      // })
     },
     handleSubmit: function() {
-      this.$refs['form'].validate(valid => {
-        if (valid) {
-          const id = this.form.id
-          if (id !== undefined) {
-            update(id, this.form).then(() => {
-              this.$message.success('修改成功')
-              this.dialog.visible = false
-              this.handleQuery()
-            })
-          } else {
-            add(this.form).then(() => {
-              this.$message.success('新增成功')
-              this.dialog.visible = false
-              this.handleQuery()
-            })
-          }
-        }
-      })
+      // this.$refs['form'].validate(valid => {
+      //   if (valid) {
+      //     const id = this.form.id
+      //     if (id !== undefined) {
+      //       update(id, this.form).then(() => {
+      //         this.$message.success('修改成功')
+      //         this.dialog.visible = false
+      //         this.handleQuery()
+      //       })
+      //     } else {
+      //       add(this.form).then(() => {
+      //         this.$message.success('新增成功')
+      //         this.dialog.visible = false
+      //         this.handleQuery()
+      //       })
+      //     }
+      //   }
+      // })
     },
     handleDelete(row) {
-      const ids = [row.id || this.ids].join(',')
-      this.$confirm('确认删除已选中的数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        del(ids).then(() => {
-          console.log(ids)
-          this.$message.success('删除成功')
-          this.handleQuery()
-        })
-      }).catch(() =>
-        this.$message.info('已取消删除')
-      )
+      // const ids = [row.id || this.ids].join(',')
+      // this.$confirm('确认删除已选中的数据项?', '警告', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   del(ids).then(() => {
+      //     console.log(ids)
+      //     this.$message.success('删除成功')
+      //     this.handleQuery()
+      //   })
+      // }).catch(() =>
+      //   this.$message.info('已取消删除')
+      // )
     },
     resetForm() {
       this.form = {
@@ -235,13 +235,13 @@ export default {
       }
     },
     loadDeptOptions() {
-      getDeptSelectList().then(response => {
-        this.deptOptions = [{
-          id: 0,
-          label: '无',
-          children: response.data
-        }]
-      })
+      // getDeptSelectList().then(response => {
+      //   this.deptOptions = [{
+      //     id: 0,
+      //     label: '无',
+      //     children: response.data
+      //   }]
+      // })
     }
   }
 }

@@ -22,7 +22,7 @@ const mutations = {
     state.nickname = nickname
   },
   SET_AVATAR: (state, avatar) => {
-    state.avatar = 'data:image/jpg;base64,' + avatar
+    state.avatar = 'data:image/png;base64,' + avatar
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
@@ -44,11 +44,6 @@ const actions = {
         captcha: captcha
       }).then(response => {
         const { tokenPrefix, token } = response.data
-        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-        console.log(response)
-        console.log(tokenPrefix)
-        console.log(token)
-        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
         commit('SET_TOKEN', tokenPrefix + token)
         setToken(tokenPrefix + token)
         resolve()
@@ -62,9 +57,6 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-        console.log(response)
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
         const { data } = response
 
         if (!data) {

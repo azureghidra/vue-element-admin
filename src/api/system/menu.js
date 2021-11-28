@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getMenuTableList(queryParams) {
   return request({
-    url: '/menus/table',
+    url: '/sys/menu/table',
     method: 'get',
     params: queryParams
   })
@@ -10,28 +10,28 @@ export function getMenuTableList(queryParams) {
 
 export function getMenuSelectList() {
   return request({
-    url: '/menus/select',
+    url: '/sys/menu/select',
     method: 'get'
   })
 }
 
 export function getMenuTreeSelectList() {
   return request({
-    url: '/menus/tree-select',
+    url: '/sys/menu/tree-select',
     method: 'get'
   })
 }
 
 export function getMenuRouteList() {
   return request({
-    url: '/menus/route',
+    url: '/sys/menu/route',
     method: 'get'
   })
 }
 
 export function detail(id) {
   return request({
-    url: '/menus/' + id,
+    url: '/sys/menu/' + id,
     method: 'get'
   })
 }
@@ -46,7 +46,7 @@ export function add(data) {
 
 export function update(id, data) {
   return request({
-    url: '/sys/menus/' + id,
+    url: '/sys/menu/' + id,
     method: 'put',
     data: data
   })
@@ -54,14 +54,14 @@ export function update(id, data) {
 
 export function del(ids) {
   return request({
-    url: '/sys/menus/' + ids,
+    url: '/sys/menu/' + ids,
     method: 'delete'
   })
 }
 
 export function patch(id, data) {
   return request({
-    url: '/sys/menus/' + id,
+    url: '/sys/menu/' + id,
     method: 'patch',
     data: data
   })

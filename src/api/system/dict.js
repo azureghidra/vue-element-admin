@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDictPageList(queryParams) {
   return request({
-    url: '/sys/dicts/page',
+    url: '/sys/dict/page',
     method: 'get',
     params: queryParams
   })
@@ -10,14 +10,14 @@ export function getDictPageList(queryParams) {
 
 export function detail(id) {
   return request({
-    url: '/sys/dicts/' + id,
+    url: '/sys/dict/' + id,
     method: 'get'
   })
 }
 
 export function add(data) {
   return request({
-    url: '/dicts',
+    url: '/sys/dict',
     method: 'post',
     data: data
   })
@@ -25,7 +25,7 @@ export function add(data) {
 
 export function update(id, data) {
   return request({
-    url: '/sys/dicts/' + id,
+    url: '/sys/dict/' + id,
     method: 'put',
     data: data
   })
@@ -33,14 +33,14 @@ export function update(id, data) {
 
 export function del(ids) {
   return request({
-    url: '/sys/dicts/' + ids,
+    url: '/sys/dict/' + ids,
     method: 'delete'
   })
 }
 
 export function patch(id, data) {
   return request({
-    url: '/sys/dicts/' + id,
+    url: '/sys/dict/' + id,
     method: 'patch',
     data: data
   })

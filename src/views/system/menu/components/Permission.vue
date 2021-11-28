@@ -44,7 +44,7 @@
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column label="权限名称" prop="name" width="150" />
         <el-table-column label="URL权限" align="center">
-          <el-table-column prop="serviceName" label="所属服务" />
+          <!--          <el-table-column prop="serviceName" label="所属服务" />-->
           <el-table-column prop="requestMethod" label="请求方式" />
           <el-table-column prop="requestPath" label="请求路径" />
         </el-table-column>
@@ -95,15 +95,15 @@
 
           <el-form-item label="URL权限标识" prop="urlPerm">
             <el-input v-model="urlPerm.requestPath" placeholder="/api/v1/users" class="input-with-select">
-              <el-select
-                slot="prepend"
-                v-model="urlPerm.serviceName"
-                style="width: 130px;"
-                placeholder="所属服务"
-                clearable
-              >
-                <el-option v-for="item in microServiceList" :value="item.value" :label="item.name" />
-              </el-select>
+              <!--              <el-select-->
+              <!--                slot="prepend"-->
+              <!--                v-model="urlPerm.serviceName"-->
+              <!--                style="width: 130px;"-->
+              <!--                placeholder="所属服务"-->
+              <!--                clearable-->
+              <!--              >-->
+              <!--                <el-option v-for="item in microServiceList" :key="item.id" :value="item.value" :label="item.name" />-->
+              <!--              </el-select>-->
               <el-select
                 slot="prepend"
                 v-model="urlPerm.requestMethod"
@@ -111,11 +111,13 @@
                 placeholder="请求方式"
                 clearable
               >
-                <el-option v-for="item in requestMethodList" :value="item.value" :label="item.name" />
+                <el-option v-for="item in requestMethodList" :key="item.id" :value="item.value" :label="item.name" />
               </el-select>
             </el-input>
             <el-link v-show="urlPerm.requestMethod" type="primary">
-              {{ urlPerm.requestMethod }}:/{{ urlPerm.serviceName }}{{ urlPerm.requestPath }}
+              {{ urlPerm.requestMethod }}:/
+              <!--              {{ urlPerm.serviceName }}-->
+              {{ urlPerm.requestPath }}
             </el-link>
           </el-form-item>
 
@@ -179,7 +181,7 @@ export default {
       menuName: undefined,
       urlPerm: {
         requestMethod: undefined,
-        serviceName: undefined,
+        // serviceName: undefined,
         requestPath: undefined
       },
       microServiceList: [],
@@ -250,11 +252,11 @@ export default {
           // GET:/users
           const permArr = urlPerm.split(':')
           const requestMethod = permArr[0]
-          const serviceName = permArr[1].substring(1, permArr[1].substr(1).indexOf('/') + 1)
+          // const serviceName = permArr[1].substring(1, permArr[1].substr(1).indexOf('/') + 1)
           const requestPath = permArr[1].substring(permArr[1].substr(1).indexOf('/') + 1)
           this.urlPerm = {
             requestMethod: requestMethod,
-            serviceName: serviceName,
+            // serviceName: serviceName,
             requestPath: requestPath
           }
         }
@@ -275,12 +277,14 @@ export default {
               this.$message.warning('URL权限的请求方式不能为空')
               return false
             }
-            if (!this.urlPerm.serviceName) {
-              this.$message.warning('URL权限的所属服务不能为空')
-              return false
-            }
+            // if (!this.urlPerm.serviceName) {
+            //   this.$message.warning('URL权限的所属服务不能为空')
+            //   return false
+            // }
           }
-          this.form.urlPerm = this.urlPerm.requestMethod + ':/' + this.urlPerm.serviceName + this.urlPerm.requestPath
+          this.form.urlPerm = this.urlPerm.requestMethod + ':' +
+            // this.urlPerm.serviceName +
+            this.urlPerm.requestPath
 
           this.form.menuId = this.menu.id
           if (this.form.id !== undefined) {

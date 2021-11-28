@@ -1,6 +1,6 @@
 import { constantRoutes } from '@/router'
-import { getMenus } from '@/api/menu'
 import Layout from '@/layout'
+import { getMenuRouteList } from '@/api/system/menu'
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
@@ -58,7 +58,7 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
-      getMenus().then(response => {
+      getMenuRouteList().then(response => {
         const accessedRoutes = filterAsyncRoutes(response.data, roles)
         commit('SET_ROUTES', accessedRoutes)
         resolve(accessedRoutes)
