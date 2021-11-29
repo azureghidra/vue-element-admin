@@ -8,6 +8,13 @@ export function getDictPageList(queryParams) {
   })
 }
 
+export function items(name) {
+  return request({
+    url: '/sys/dict/' + name,
+    method: 'get'
+  })
+}
+
 export function detail(id) {
   return request({
     url: '/sys/dict/' + id,
