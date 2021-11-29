@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="queryForm" size="small" :inline="true" :model="queryParams">
       <el-form-item>
-        <el-button icon="el-icon-plus" type="success" @click="handleAdd">新增</el-button>
+        <el-button icon="el-icon-plus" type="success" @click="handleAdd">创建</el-button>
       </el-form-item>
 
       <el-form-item>
@@ -27,20 +27,21 @@
 
     <el-table
       v-loading="loading"
-      :data="tableList"
+      :data="pageList"
       row-key="id"
-      default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       border
     >
       <el-table-column prop="name" label="项目名称" />
+      <el-table-column prop="weiTuo" label="委托单位" />
+      <el-table-column prop="address" label="工程地址" />
+      <el-table-column prop="beginTime" label="开始日期" />
+      <el-table-column prop="endTime" label="结束日期" />
       <el-table-column prop="status" label="进展状态" width="100">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status===1" type="success">已完成</el-tag>
           <el-tag v-else type="info">正在进行</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="显示排序" width="200" />
       <el-table-column label="操作" align="center" width="150">
         <template slot-scope="scope">
           <el-button
@@ -75,37 +76,64 @@
     <el-dialog
       :title="dialog.title"
       :visible.sync="dialog.visible"
-      width="600px"
+      width="800px"
     >
       <el-form
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="80px"
+        label-width="100px"
       >
-
-        <el-form-item label="检验类别" prop="parentId">
-          <tree-select
-            v-model="form.parentId"
-            :options="deptOptions"
-            placeholder="选择检验类别"
-          />
-        </el-form-item>
 
         <el-form-item label="项目名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入项目名称" />
         </el-form-item>
-        <el-form-item label="委托单位" prop="weituo_danwei">
-          <el-input v-model="form.weiTuoDanWei" placeholder="请输入委托单位名称" />
+        <el-form-item label="施工单位" prop="jianShe">
+          <el-input v-model="form.jianShe" placeholder="请输入建设单位名称" />
         </el-form-item>
-
+        <el-form-item label="建设单位" prop="shiGong">
+          <el-input v-model="form.shiGong" placeholder="请输入施工单位名称" />
+        </el-form-item>
+        <el-form-item label="委托单位" prop="weituo">
+          <el-input v-model="form.weituo" placeholder="请输入委托单位名称" />
+        </el-form-item>
+        <el-form-item label="联系人" prop="lianXiRen">
+          <el-input v-model="form.lianXiRen" placeholder="请输入委托方联系人" />
+        </el-form-item>
+        <el-form-item label="联系电话" prop="lianXiRen">
+          <el-input v-model="form.lianXiRen" placeholder="请输入委托方联系电话" />
+        </el-form-item>
+        <el-form-item label="协议书编号" prop="no">
+          <el-input v-model="form.no" placeholder="请输入协议书编号" />
+        </el-form-item>
+        <el-form-item label="检验类别">
+          <el-select v-model="form.type" placeholder="请选择">
+            <el-option label="委托检验" :value="1" />
+            <el-option label="监督抽查" :value="2" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="开始日期">
+          <el-date-picker
+            v-model="form.beginDate"
+            value-format="yyyy-MM-dd"
+            type="date"
+            placeholder="开始日期"
+          />
+        </el-form-item>
+        <el-form-item label="开始日期">
+          <el-date-picker
+            v-model="form.endDate"
+            value-format="yyyy-MM-dd"
+            placeholder="结束时间"
+          />
+        </el-form-item>
         <el-form-item label="显示排序" prop="sort">
           <el-input-number v-model="form.sort" controls-position="right" style="width: 100px" :min="0" />
         </el-form-item>
         <el-form-item label="进展状态">
           <el-radio-group v-model="form.status">
-            <el-radio :label="true">已完成</el-radio>
-            <el-radio :label="false">进行中</el-radio>
+            <el-radio :label="1">已完成</el-radio>
+            <el-radio :label="0">进行中</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -119,6 +147,8 @@
 
 <script>
 
+import { list } from '@/api/project/overview'
+
 export default {
   components: '',
   data() {
@@ -130,22 +160,33 @@ export default {
         name: undefined,
         status: undefined
       },
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 0
+      },
       dialog: {
         title: undefined,
         visible: false
       },
       form: {
-        parentId: undefined,
         name: undefined,
-        sort: 1,
-        status: 1
+        address: undefined,
+        jianShe: undefined,
+        weiTuo: undefined,
+        shiGong: undefined,
+        no: undefined,
+        type: undefined,
+        lianXiRen: undefined,
+        phone: undefined,
+        beginDate: undefined,
+        endDate: undefined,
+        status: 0,
+        sort: 1
       },
       rules: {
-        parentId: [
-          { required: true, message: '上级部门不能为空', trigger: 'blur' }
-        ],
         name: [
-          { required: true, message: '部门名称不能为空', trigger: 'blur' }
+          { required: true, message: '项目名称不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -155,24 +196,28 @@ export default {
   },
   methods: {
     handleQuery() {
-      // getDeptTableList(this.queryParams).then(response => {
-      //   this.tableList = response.data
-      //   this.loading = false
-      // })
+      this.queryParams.page = this.pagination.page
+      this.queryParams.limit = this.pagination.limit
+      list(this.queryParams).then(response => {
+        const { data, total } = response
+        this.pageList = data
+        this.pagination.total = total
+        this.loading = false
+      })
     },
     handleReset() {
-      // this.queryParams = {
-      //   name: undefined,
-      //   status: undefined
-      // }
-      // this.handleQuery()
+      this.queryParams = {
+        name: undefined,
+        status: undefined
+      }
+      this.handleQuery()
     },
     async handleAdd(row) {
-      // this.resetForm()
-      // this.dialog = {
-      //   title: '新增部门',
-      //   visible: true
-      // }
+      this.resetForm()
+      this.dialog = {
+        title: '创建项目',
+        visible: true
+      }
       // await this.loadDeptOptions()
       // if (row) {
       //   this.form.parentId = row.id
@@ -181,10 +226,10 @@ export default {
     async handleUpdate(row) {
       // this.resetForm()
       // this.dialog = {
-      //   title: '修改部门',
+      //   title: '修改项目',
       //   visible: true
       // }
-      // // 部门下拉数据
+      // // 项目下拉数据
       // await this.loadDeptOptions()
       // detail(row.id).then(response => {
       //   this.form = response.data
@@ -202,7 +247,7 @@ export default {
       //       })
       //     } else {
       //       add(this.form).then(() => {
-      //         this.$message.success('新增成功')
+      //         this.$message.success('创建成功')
       //         this.dialog.visible = false
       //         this.handleQuery()
       //       })
@@ -228,10 +273,19 @@ export default {
     },
     resetForm() {
       this.form = {
-        parentId: undefined,
         name: undefined,
-        sort: 1,
-        status: 1
+        address: undefined,
+        jianShe: undefined,
+        weiTuo: undefined,
+        shiGong: undefined,
+        no: undefined,
+        type: undefined,
+        lianXiRen: undefined,
+        phone: undefined,
+        beginDate: undefined,
+        endDate: undefined,
+        status: 0,
+        sort: 1
       }
     },
     loadDeptOptions() {
