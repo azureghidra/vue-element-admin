@@ -8,9 +8,16 @@ export function list(queryParams) {
   })
 }
 
+export function detail(id) {
+  return request({
+    url: '/proj/overview/' + id,
+    method: 'get'
+  })
+}
+
 export function add(data) {
   return request({
-    url: '/proj/overview',
+    url: '/proj/overview/',
     method: 'post',
     data: data
   })
@@ -18,7 +25,7 @@ export function add(data) {
 
 export function update(id, data) {
   return request({
-    url: '/proj/overview' + id,
+    url: '/proj/overview/' + id,
     method: 'put',
     data: data
   })

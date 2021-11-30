@@ -39,7 +39,7 @@
       <el-table-column prop="status" label="进展状态" width="100">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status===1" type="success">已完成</el-tag>
-          <el-tag v-else type="info">正在进行</el-tag>
+          <el-tag v-else type="info">进行中</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="150">
@@ -80,7 +80,7 @@
       top="3vh"
     >
       <el-form
-        ref="form"
+        ref="viewForm"
         :model="form"
         label-width="100px"
       >
@@ -255,7 +255,8 @@
 
 <script>
 
-import { list } from '@/api/project/overview'
+import { list, add, update, detail } from '@/api/project/overview'
+import { items } from '@/api/system/dict'
 
 export default {
   components: '',
@@ -264,7 +265,7 @@ export default {
       loading: true,
       pageList: [],
       tableList: [],
-      deptOptions: [],
+      dictItems: [],
       queryParams: {
         name: undefined,
         status: undefined
@@ -301,6 +302,21 @@ export default {
       rules: {
         name: [
           { required: true, message: '项目名称不能为空', trigger: 'blur' }
+        ],
+        jianShe: [
+          { required: true, message: '建设单位不能为空', trigger: 'blur' }
+        ],
+        shiGong: [
+          { required: true, message: '施工单位不能为空', trigger: 'blur' }
+        ],
+        weiTuo: [
+          { required: true, message: '委托单位不能为空', trigger: 'blur' }
+        ],
+        leiBie: [
+          { required: true, message: '检验类别不能为空', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '工程地址不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -326,16 +342,12 @@ export default {
       }
       this.handleQuery()
     },
-    async handleAdd(row) {
+    async handleAdd() {
       this.resetForm()
       this.dialog = {
         title: '创建项目',
         visible: true
       }
-      // await this.loadDeptOptions()
-      // if (row) {
-      //   this.form.parentId = row.id
-      // }
     },
     async handleView(row) {
       this.viewDialog = {
@@ -343,10 +355,7 @@ export default {
         visible: true
       }
       this.form = row
-      // await this.loadDeptOptions()
-      // if (row) {
-      //   this.form.parentId = row.id
-      // }
+      await this.loadDictItems('检验类别')
     },
     async handleUpdate(row) {
       this.resetForm()
@@ -354,31 +363,29 @@ export default {
         title: '修改项目',
         visible: true
       }
-      // // 项目下拉数据
-      // await this.loadDeptOptions()
-      // detail(row.id).then(response => {
-      //   this.form = response.data
-      // })
+      detail(row.id).then(response => {
+        this.form = response.data
+      })
     },
     handleSubmit: function() {
-      // this.$refs['form'].validate(valid => {
-      //   if (valid) {
-      //     const id = this.form.id
-      //     if (id !== undefined) {
-      //       update(id, this.form).then(() => {
-      //         this.$message.success('修改成功')
-      //         this.dialog.visible = false
-      //         this.handleQuery()
-      //       })
-      //     } else {
-      //       add(this.form).then(() => {
-      //         this.$message.success('创建成功')
-      //         this.dialog.visible = false
-      //         this.handleQuery()
-      //       })
-      //     }
-      //   }
-      // })
+      this.$refs['form'].validate(valid => {
+        if (valid) {
+          const id = this.form.id
+          if (id !== undefined) {
+            update(id, this.form).then(() => {
+              this.$message.success('修改成功')
+              this.dialog.visible = false
+              this.handleQuery()
+            })
+          } else {
+            add(this.form).then(() => {
+              this.$message.success('创建成功')
+              this.dialog.visible = false
+              this.handleQuery()
+            })
+          }
+        }
+      })
     },
     handleDelete(row) {
       // const ids = [row.id || this.ids].join(',')
@@ -414,14 +421,15 @@ export default {
         status: 0
       }
     },
-    loadDictOptions() {
-      // getDictOptions().then(response => {
-      //   this.deptOptions = [{
-      //     id: 0,
-      //     label: '无',
-      //     children: response.data
-      //   }]
-      // })
+    loadDictItems(name) {
+      items(name).then(response => {
+        const { data } = response
+        this.dictItems = [{
+          id: data.id,
+          name: data.name,
+          items: data.items
+        }]
+      })
     }
   }
 }

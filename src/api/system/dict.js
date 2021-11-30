@@ -10,7 +10,7 @@ export function getDictPageList(queryParams) {
 
 export function items(name) {
   return request({
-    url: '/sys/dict/' + name,
+    url: '/sys/dict/' + name + '/items',
     method: 'get'
   })
 }
