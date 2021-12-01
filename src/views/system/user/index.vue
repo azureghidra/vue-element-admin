@@ -200,9 +200,9 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" maxlength="50" placeholder="请输入邮箱" />
         </el-form-item>
-        <el-form-item label="所属部门" prop="deptId">
+        <el-form-item label="所属部门" prop="departmentId">
           <tree-select
-            v-model="form.deptId"
+            v-model="form.departmentId"
             :options="deptOptions"
             placeholder="请选择所属部门"
           />
@@ -278,7 +278,7 @@ export default {
         roleId: [
           { required: true, message: '用户角色不能为空', trigger: 'blur' }
         ],
-        deptId: [
+        departmentId: [
           { required: true, message: '归属部门不能为空', trigger: 'blur' }
         ],
         email: [
@@ -343,7 +343,7 @@ export default {
     },
     // 部门节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id
+      this.queryParams.departmentId = data.id
       this.handleQuery()
     },
     // 用户状态修改
@@ -456,7 +456,7 @@ export default {
     resetForm() {
       this.form = {
         id: undefined,
-        deptId: undefined,
+        departmentId: undefined,
         username: undefined,
         nickname: undefined,
         mobile: undefined,

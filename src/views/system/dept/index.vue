@@ -34,13 +34,13 @@
       border
     >
       <el-table-column prop="name" label="部门名称" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="status" label="状态" align="center" width="70">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status===1" type="success">正常</el-tag>
           <el-tag v-else type="info">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="显示排序" width="200" />
+      <el-table-column prop="sort" label="显示排序" align="center" width="90" />
       <el-table-column label="操作" align="center" width="150">
         <template slot-scope="scope">
           <el-button
