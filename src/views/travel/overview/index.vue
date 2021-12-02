@@ -7,24 +7,24 @@
 
       <el-form-item>
         <el-input
-          v-model="queryParams.name"
-          placeholder="项目名称"
+          v-model="queryParams.travelers"
+          placeholder="出差人"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-input
-          v-model="queryParams.weiTuo"
-          placeholder="委托单位"
+          v-model="queryParams.beginDate"
+          placeholder="起始日期"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
         <el-input
-          v-model="queryParams.address"
-          placeholder="工程地址"
+          v-model="queryParams.endDate"
+          placeholder="截止日期"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -47,26 +47,19 @@
       row-key="id"
       border
     >
-      <el-table-column align="center" width="55" prop="bianHao" label="编号" />
-      <el-table-column align="center" prop="name" label="项目名称" />
-      <el-table-column align="center" prop="weiTuo" label="委托单位" />
-      <el-table-column align="center" prop="address" label="工程地址" />
-      <el-table-column align="center" width="120" prop="yeWuLeiXing" label="业务类型">
-        <template slot-scope="scope">
-          <span v-if="scope.row.yeWuLeiXing===1">安防工程检验</span>
-          <span v-if="scope.row.yeWuLeiXing===2">信息工程质量监督检验</span>
-          <span v-if="scope.row.yeWuLeiXing===3">综合布线工程验收</span>
-          <span v-if="scope.row.yeWuLeiXing===4">数据中心/机房验收</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" width="100" prop="beginDate" label="开始日期" />
+      <el-table-column align="center" width="55" prop="sort" label="序号" />
+      <el-table-column align="center" prop="travelers" label="出差人员" />
+      <el-table-column align="center" prop="purposeForTrip" label="出差事由" />
+      <el-table-column align="center" width="100" prop="beginDate" label="起始日期" />
       <el-table-column align="center" width="100" prop="endDate" label="结束日期" />
-      <el-table-column align="center" prop="status" label="进展状态" width="78">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.status===1" type="success">已完成</el-tag>
-          <el-tag v-else type="info">进行中</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" width="100" prop="destination" label="出差地点" />
+      <el-table-column align="center" width="100" prop="vehicleVesselFare" label="车船费" />
+      <el-table-column align="center" width="100" prop="oilRoadBridgeFare" label="路桥费" />
+      <el-table-column align="center" width="100" prop="trainFare" label="火车费" />
+      <el-table-column align="center" width="100" prop="airFare" label="飞机费" />
+      <el-table-column align="center" width="100" prop="accommodationFare" label="住宿费" />
+      <el-table-column align="center" width="100" prop="miscFare" label="杂费" />
+      <el-table-column align="center" width="100" prop="receiptCount" label="单据张数" />
       <el-table-column align="center" label="操作" width="150">
         <template slot-scope="scope">
           <el-button
@@ -107,7 +100,7 @@
       />
     </el-row>
 
-    <!-- 查看项目对话框 -->
+    <!-- 查看差旅费报销单 -->
     <el-dialog
       :title="viewDialog.title"
       :visible.sync="viewDialog.visible"
@@ -147,8 +140,8 @@
         </el-row>
         <el-row :gutter="0" class="el-row">
           <el-col :gutter="0" class="el-col">
-            <el-form-item label="工程地址：" prop="address">
-              {{ form.address }}
+            <el-form-item label="工程地址：" prop="destination">
+              {{ form.destination }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -270,8 +263,8 @@
         </el-row>
         <el-row>
           <el-col :span="20">
-            <el-form-item label="工程地址" prop="address">
-              <el-input v-model="form.address" placeholder="请输入工程地址" />
+            <el-form-item label="工程地址" prop="destination">
+              <el-input v-model="form.destination" placeholder="请输入工程地址" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -358,8 +351,7 @@
 </template>
 
 <script>
-import { list, add, update, detail } from '@/api/project/overview'
-import { items } from '@/api/system/dict'
+import { list, add, update, detail } from '@/api/travel/overview'
 export default {
   components: '',
   data() {
@@ -386,39 +378,38 @@ export default {
         visible: false
       },
       form: {
-        name: undefined,
-        jianShe: undefined,
-        shiGong: undefined,
-        weiTuo: undefined,
-        leiBie: undefined,
-        address: undefined,
-        bianHao: undefined,
-        lianXiRen: undefined,
-        phone: undefined,
+        sort: undefined,
+        travelers: undefined,
+        purposeForTrip: undefined,
         beginDate: undefined,
         endDate: undefined,
-        sort: 1,
-        yeWuLeiXing: undefined,
-        status: 0
+        destination: undefined,
+        vehicleVesselFare: undefined,
+        oilRoadBridgeFare: undefined,
+        trainFare: undefined,
+        airFare: undefined,
+        accommodationFare: undefined,
+        miscFare: undefined,
+        receiptCount: undefined
       },
       rules: {
-        name: [
-          { required: true, message: '项目名称不能为空', trigger: 'blur' }
+        travelers: [
+          { required: true, message: '出差人员不能为空', trigger: 'blur' }
         ],
-        jianShe: [
-          { required: true, message: '建设单位不能为空', trigger: 'blur' }
+        purposeForTrip: [
+          { required: true, message: '出差事由不能为空', trigger: 'blur' }
         ],
-        shiGong: [
-          { required: true, message: '施工单位不能为空', trigger: 'blur' }
+        beginDate: [
+          { required: true, message: '起始日期不能为空', trigger: 'blur' }
         ],
-        weiTuo: [
-          { required: true, message: '委托单位不能为空', trigger: 'blur' }
+        endDate: [
+          { required: true, message: '截止日期不能为空', trigger: 'blur' }
         ],
-        leiBie: [
-          { required: true, message: '检验类别不能为空', trigger: 'blur' }
+        destination: [
+          { required: true, message: '出差地点不能为空', trigger: 'blur' }
         ],
-        address: [
-          { required: true, message: '工程地址不能为空', trigger: 'blur' }
+        receiptCount: [
+          { required: true, message: '单据张数不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -439,21 +430,32 @@ export default {
     },
     handleReset() {
       this.queryParams = {
-        name: undefined,
-        status: undefined
+        sort: undefined,
+        travelers: undefined,
+        purposeForTrip: undefined,
+        beginDate: undefined,
+        endDate: undefined,
+        destination: undefined,
+        vehicleVesselFare: undefined,
+        oilRoadBridgeFare: undefined,
+        trainFare: undefined,
+        airFare: undefined,
+        accommodationFare: undefined,
+        miscFare: undefined,
+        receiptCount: undefined
       }
       this.handleQuery()
     },
     async handleAdd() {
       this.resetForm()
       this.dialog = {
-        title: '创建项目',
+        title: '填写报销单',
         visible: true
       }
     },
     async handleView(row) {
       this.viewDialog = {
-        title: '项目详情',
+        title: '报销单详情',
         visible: true
       }
       this.form = row
@@ -462,7 +464,7 @@ export default {
     async handleUpdate(row) {
       this.resetForm()
       this.dialog = {
-        title: '修改项目',
+        title: '修改报销单',
         visible: true
       }
       detail(row.id).then(response => {
@@ -507,31 +509,20 @@ export default {
     },
     resetForm() {
       this.form = {
-        name: undefined,
-        jianShe: undefined,
-        shiGong: undefined,
-        weiTuo: undefined,
-        leiBie: undefined,
-        address: undefined,
-        bianHao: undefined,
-        lianXiRen: undefined,
-        phone: undefined,
+        sort: undefined,
+        travelers: undefined,
+        purposeForTrip: undefined,
         beginDate: undefined,
         endDate: undefined,
-        sort: 1,
-        yeWuLeiXing: undefined,
-        status: 0
+        destination: undefined,
+        vehicleVesselFare: undefined,
+        oilRoadBridgeFare: undefined,
+        trainFare: undefined,
+        airFare: undefined,
+        accommodationFare: undefined,
+        miscFare: undefined,
+        receiptCount: undefined
       }
-    },
-    loadDictItems(name) {
-      items(name).then(response => {
-        const { data } = response
-        this.dictItems = [{
-          id: data.id,
-          name: data.name,
-          items: data.items
-        }]
-      })
     }
   }
 }

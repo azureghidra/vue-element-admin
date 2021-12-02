@@ -38,7 +38,7 @@ export function detail(id) {
 
 export function add(data) {
   return request({
-    url: '/menus',
+    url: '/sys/menu/',
     method: 'post',
     data: data
   })
