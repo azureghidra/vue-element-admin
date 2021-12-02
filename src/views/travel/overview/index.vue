@@ -107,113 +107,8 @@
       width="500px"
       top="3vh"
     >
-      <el-form
-        ref="viewForm"
-        :model="form"
-        label-width="100px"
-      >
-        <el-row>
-          <el-col :gutter="0" class="el-col" :span="12">
-            <template>
-              <el-form-item label="业务类型：">
-                <span v-if="form.yeWuLeiXing===1">安防工程检验</span>
-                <span v-if="form.yeWuLeiXing===2">信息工程质量监督检验</span>
-                <span v-if="form.yeWuLeiXing===3">综合布线工程验收</span>
-                <span v-if="form.yeWuLeiXing===4">数据中心/机房验收</span>
-              </el-form-item>
-            </template>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
-            <el-form-item label="项目名称：" prop="name">
-              {{ form.name }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
-            <el-form-item label="建设单位：" prop="shiGong">
-              {{ form.shiGong }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
-            <el-form-item label="工程地址：" prop="destination">
-              {{ form.destination }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
-            <el-form-item label="施工单位：" prop="jianShe">
-              {{ form.jianShe }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
-            <el-form-item label="委托单位：" prop="weiTtuo">
-              {{ form.weiTuo }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item label="联系人：" prop="lianXiRen">
-              {{ form.lianXiRen }}
-            </el-form-item>
-          </el-col>
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item label="联系电话：" prop="phone">
-              {{ form.phone }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item label="协议书编号：" prop="bianHao">
-              {{ form.bianHao }}
-            </el-form-item>
-          </el-col>
-          <el-col :gutter="0" class="el-col" :span="12">
-            <template>
-              <el-form-item label="检验类别：">
-                <span v-if="form.leiBie===1">委托检验</span>
-                <span v-if="form.leiBie===2">委托验收</span>
-                <span v-if="form.leiBie===3">监督抽查</span>
-              </el-form-item>
-            </template>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item label="开始日期：">
-              {{ form.beginDate }}
-            </el-form-item>
-          </el-col>
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item label="结束日期：">
-              {{ form.endDate }}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item label="显示排序：" prop="sort">
-              {{ form.sort }}
-            </el-form-item>
-          </el-col>
-          <el-col :gutter="0" class="el-col" :span="12">
-            <el-form-item v-if="form.status===1" label="进展状态：">
-              已完成
-            </el-form-item>
-            <el-form-item v-if="form.status===0" label="进展状态：">
-              进行中
-            </el-form-item>
-          </el-col>
-        </el-row>
+      <el-form>
+        ......
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="viewDialog.visible=false">关闭</el-button>
@@ -224,120 +119,93 @@
     <el-dialog
       :title="dialog.title"
       :visible.sync="dialog.visible"
-      width="800px"
+      width="60%"
       top="3vh"
     >
       <el-form
         ref="form"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="4px"
       >
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="项目名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入项目名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="建设单位" prop="shiGong">
-              <el-input v-model="form.shiGong" placeholder="请输入施工单位名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="施工单位" prop="jianShe">
-              <el-input v-model="form.jianShe" placeholder="请输入建设单位名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="委托单位" prop="weiTtuo">
-              <el-input v-model="form.weiTuo" placeholder="请输入委托单位名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="工程地址" prop="destination">
-              <el-input v-model="form.destination" placeholder="请输入工程地址" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="联系人" prop="lianXiRen">
-              <el-input v-model="form.lianXiRen" placeholder="请输入委托方联系人" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="联系电话" prop="phone">
-              <el-input v-model="form.phone" placeholder="请输入委托方联系电话" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="协议书编号" prop="bianHao">
-              <el-input v-model="form.bianHao" placeholder="请输入协议书编号" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="检验类别">
-              <el-select v-model="form.leiBie" placeholder="请选择">
-                <el-option label="委托检验" :value="1" />
-                <el-option label="监督抽查" :value="2" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="业务类型">
-              <el-select v-model="form.yeWuLeiXing" placeholder="请选择">
-                <el-option label="安防工程检验" :value="1" />
-                <el-option label="信息工程质量监督检验" :value="2" />
-                <el-option label="综合布线工程验收" :value="3" />
-                <el-option label="数据中心/机房验收" :value="4" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
+        <el-row :gutter="2" type="flex">
           <el-col :span="10">
-            <el-form-item label="开始日期">
+            <el-form-item prop="travelers">
+              <el-input v-model="form.travelers" type="textarea" autosize :rows="2" placeholder="出差人员" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="info">选择</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="purposeForTrip">
+              <el-input v-model="form.purposeForTrip" type="textarea" autosize :rows="2" placeholder="请输入出差事由" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="2" type="flex">
+          <el-col :span="8">
+            <el-form-item>
               <el-date-picker
                 v-model="form.beginDate"
                 value-format="yyyy-MM-dd"
                 type="date"
-                placeholder="开始日期"
+                placeholder="起始日期"
               />
             </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <el-form-item label="结束日期">
+          <el-col :span="8">
+            <el-form-item>
               <el-date-picker
                 v-model="form.endDate"
                 value-format="yyyy-MM-dd"
-                placeholder="结束日期"
+                placeholder="截止日期"
               />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="10">
-            <el-form-item label="显示排序" prop="sort">
-              <el-input-number v-model="form.sort" controls-position="right" style="width: 100px" :min="0" />
+          <el-col :span="6">
+            <el-form-item>
+              <el-input v-model="form.destination" placeholder="出差地点" />
             </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <el-form-item label="进展状态">
-              <el-radio-group v-model="form.status">
-                <el-radio :label="1">已完成</el-radio>
-                <el-radio :label="0">进行中</el-radio>
-              </el-radio-group>
+          <el-col :span="2">
+            <el-button type="info">选择</el-button>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="3">
+            <el-form-item>
+              <el-input v-model="form.vehicleVesselFare" placeholder="车船费" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <el-form-item>
+              <el-input v-model="form.oilRoadBridgeFare" placeholder="路桥费" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item>
+              <el-input v-model="form.trainFare" placeholder="火车费" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item>
+              <el-input v-model="form.airFare" placeholder="飞机费" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item>
+              <el-input v-model="form.accommodationFare" placeholder="住宿费" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-form-item>
+              <el-input v-model="form.miscFare" placeholder="杂费" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item>
+              <el-input v-model="form.receiptCount" placeholder="单据张数" />
             </el-form-item>
           </el-col>
         </el-row>

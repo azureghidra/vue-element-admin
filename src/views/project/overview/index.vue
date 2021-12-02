@@ -120,7 +120,7 @@
         label-width="100px"
       >
         <el-row>
-          <el-col :gutter="0" class="el-col" :span="12">
+          <el-col :gutter="0" class="el-col" :span="24">
             <template>
               <el-form-item label="业务类型：">
                 <span v-if="form.yeWuLeiXing===1">安防工程检验</span>
@@ -132,35 +132,35 @@
           </el-col>
         </el-row>
         <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
+          <el-col :gutter="0" class="el-col" :span="24">
             <el-form-item label="项目名称：" prop="name">
               {{ form.name }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
+          <el-col :gutter="0" class="el-col" :span="24">
             <el-form-item label="建设单位：" prop="shiGong">
               {{ form.shiGong }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
+          <el-col :gutter="0" class="el-col" :span="24">
             <el-form-item label="工程地址：" prop="address">
               {{ form.address }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
+          <el-col :gutter="0" class="el-col" :span="24">
             <el-form-item label="施工单位：" prop="jianShe">
               {{ form.jianShe }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="0" class="el-row">
-          <el-col :gutter="0" class="el-col">
+          <el-col :gutter="0" class="el-col" :span="24">
             <el-form-item label="委托单位：" prop="weiTtuo">
               {{ form.weiTuo }}
             </el-form-item>
@@ -231,7 +231,7 @@
     <el-dialog
       :title="dialog.title"
       :visible.sync="dialog.visible"
-      width="800px"
+      width="47%"
       top="3vh"
     >
       <el-form
@@ -241,54 +241,54 @@
         label-width="100px"
       >
         <el-row>
-          <el-col :span="20">
+          <el-col :span="24">
             <el-form-item label="项目名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入项目名称" />
+              <el-input v-model="form.name" type="textarea" autosize placeholder="请输入项目名称" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="20">
+          <el-col :span="24">
             <el-form-item label="建设单位" prop="shiGong">
-              <el-input v-model="form.shiGong" placeholder="请输入施工单位名称" />
+              <el-input v-model="form.shiGong" type="textarea" autosize placeholder="请输入施工单位名称" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="20">
+          <el-col :span="24">
             <el-form-item label="施工单位" prop="jianShe">
-              <el-input v-model="form.jianShe" placeholder="请输入建设单位名称" />
+              <el-input v-model="form.jianShe" type="textarea" autosize placeholder="请输入建设单位名称" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="20">
+          <el-col :span="24">
             <el-form-item label="委托单位" prop="weiTtuo">
-              <el-input v-model="form.weiTuo" placeholder="请输入委托单位名称" />
+              <el-input v-model="form.weiTuo" type="textarea" autosize placeholder="请输入委托单位名称" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="20">
+          <el-col :span="24">
             <el-form-item label="工程地址" prop="address">
-              <el-input v-model="form.address" placeholder="请输入工程地址" />
+              <el-input v-model="form.address" type="textarea" autosize placeholder="请输入工程地址" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="联系人" prop="lianXiRen">
               <el-input v-model="form.lianXiRen" placeholder="请输入委托方联系人" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="联系电话" prop="phone">
               <el-input v-model="form.phone" placeholder="请输入委托方联系电话" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="6">
             <el-form-item label="协议书编号" prop="bianHao">
               <el-input v-model="form.bianHao" placeholder="请输入协议书编号" />
             </el-form-item>
@@ -301,7 +301,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="业务类型">
               <el-select v-model="form.yeWuLeiXing" placeholder="请选择">
                 <el-option label="安防工程检验" :value="1" />
@@ -313,7 +313,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="开始日期">
               <el-date-picker
                 v-model="form.beginDate"
@@ -323,7 +323,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="12" align="right">
             <el-form-item label="结束日期">
               <el-date-picker
                 v-model="form.endDate"
@@ -333,13 +333,13 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="10">
+        <el-row :gutter="4">
+          <el-col :span="12">
             <el-form-item label="显示排序" prop="sort">
-              <el-input-number v-model="form.sort" controls-position="right" style="width: 100px" :min="0" />
+              <el-input-number v-model="form.sort" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="12">
             <el-form-item label="进展状态">
               <el-radio-group v-model="form.status">
                 <el-radio :label="1">已完成</el-radio>
