@@ -80,7 +80,9 @@ import { listRolePermission, updateRolePermission } from '@/api/system/role'
 
 export default {
   name: 'Permission',
-  props: ['type'],
+  props: {
+    'type': String
+  },
   data() {
     return {
       loading: false,
