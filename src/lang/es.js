@@ -152,7 +152,7 @@ export default {
     placeholder: 'Por favor escribe un nombre de fichero'
   },
   pdf: {
-    tips: 'Here we use window.print() to implement the feature of downloading pdf.'
+    tips: 'Here we use window.print() to implement the feature of downloading pdfjs.'
   },
   theme: {
     change: 'Cambiar tema',

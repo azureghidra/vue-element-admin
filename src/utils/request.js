@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 50000 // request timeout
+  timeout: 100000 // request timeout
 })
 
 // request interceptor
@@ -46,7 +46,7 @@ service.interceptors.response.use(
     const res = response.data
 
     // 一定要搞清楚后端返回的code是不是字符串类型的。******重要的事情。。。。调试了一上午，MLGB
-    if (res.code !== '20000') {
+    if (res.code !== undefined && res.code !== '20000') {
       Message({
         message: res.message || 'Error',
         type: 'error',

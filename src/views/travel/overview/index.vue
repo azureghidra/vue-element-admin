@@ -50,7 +50,7 @@
     </el-form>
 
     <el-table
-      v-loading="loading"
+      :v-loading="loading"
       :data="pageList"
       row-key="id"
       border
@@ -373,12 +373,11 @@ export default {
       }
     },
     async handleView(row) {
-      this.viewDialog = {
-        title: '报销单详情',
-        visible: true
-      }
-      this.form = row
-      await this.loadDictItems('检验类别')
+      this.$router.push(
+        {
+          path: '/travel/pdf/' + row.id
+        }
+      )
     },
     async handleUpdate(row) {
       this.resetForm()
